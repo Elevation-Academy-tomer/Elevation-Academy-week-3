@@ -14,3 +14,7 @@
 .thisUsers:hover {
     background-color: darkcyan;
   }
+
+a {
+    color: blue;
+}
