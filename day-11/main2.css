@@ -1,0 +1,16 @@
+#users{
+    padding: 25px;
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-gap: 5px;
+}
+
+.thisUsers{
+    display: grid;
+    grid-template-rows: repeat(2,1fr);
+    background-color: #bdc3c7;
+}
+
+.thisUsers:hover {
+    background-color: darkcyan;
+  }

@@ -1,5 +1,5 @@
                         //// EXERCISES ES6 ARRAY METHODS /////
-
+/*
 let users =[
   {
     "id": 1,
@@ -234,7 +234,7 @@ let users =[
 ]
 
 ///// Exercise 1 ////
-/*
+
 const makeToObj = (email , CompanyName) => {
     const newUsers = {
         email : email,
@@ -279,10 +279,112 @@ console.log(findIfAllLive)
 const findSuite = users.find(u => u.address.suite == "Apt. 950");
 console.log(findSuite.company.name);
 
-*/
+
 
 ///// Exercise 7 ////
 
 const print = user => console.log(`${user.name} lives in ${user.address.city}, and owns the company ${user.company.name}`)
 const each = users.forEach(u => print(u));
+
+
+
+
+                        //// EXERCISES AJAX & INTRO TO APIS /////
+
+///// Exercise 1 ////
+
+const fetch = function (isbn) {
+  $.ajax({
+      method: "GET",
+      url: `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`,
+      success: function (data) {
+          console.log(data)
+      },
+      error: function (xhr, text, error) {
+          console.log(text)
+      }
+  })
+}
+
+
+///// Exercise 2 ////
+
+const fetch = function (queryType , queryValue) {
+  $.ajax({
+      method: "GET",
+      url: `https://www.googleapis.com/books/v1/volumes?q=${queryType}:${queryValue}`,
+      success: function (data) {
+          console.log(data)
+      },
+      error: function (xhr, text, error) {
+          console.log(text)
+      }
+  })
+}
+
+///// Exercise 3 ////
+
+const fetch = function (queryType , queryValue) {
+  $.ajax({
+      method: "GET",
+      url: `https://www.googleapis.com/books/v1/volumes?q=${queryType}:${queryValue}`,
+      success: function (data) {
+          data.items
+          .forEach(b => console.log(`Title : ${b.volumeInfo.title} Author/s : ${b.volumeInfo.authors} ISBN : ${b.volumeInfo.industryIdentifiers[0].identifier} `))
+      },
+      error: function (xhr, text, error) {
+          console.log(text)
+      }
+  })
+}
+
+
+///// Exercise 4 ////
+
+var xhr = $.get("http://api.giphy.com/v1/gifs/search?q=cats&api_key=BCLtSJzk90RZUzhgT9Rdb0xFr27Zrswg&limit=5");
+xhr.done(function(data) 
+      { 
+        $("div").append(`<iframe src="${data.data[0].embed_url}">`) 
+      })
+
+*/
+
+///// Exercise 5 ////
+let valueSearch = "";
+const changeValue = value => valueSearch = value;
+const favoriteGifs = []
+const fetch = () => {
+    let value = $("#gif").val();
+    changeValue(value);
+    show()
+}
+
+$("body").on("click", ".add", function(){
+  console.log($(this).siblings("iframe").data().src)
+  favoriteGifs.push($(this).siblings("iframe").data().src)
+  show();
+})
+
+
+const show = function(){
+  $.ajax({
+      method: "GET",
+      url: `http://api.giphy.com/v1/gifs/search?q=${valueSearch}&api_key=BCLtSJzk90RZUzhgT9Rdb0xFr27Zrswg&limit=5"`,
+      success: function (data) {
+        $("#thisDiv").empty();
+          let dataOf5 = data.data.map(d => d.embed_url);
+          dataOf5.forEach(d =>
+            $("#thisDiv").append(`<span><iframe src="${d}" data-src=${d}></iframe><button class="add">Add</button></span>`)
+          )
+          $(".border2").empty();
+          favoriteGifs.forEach(d =>
+            $(".border2").append(`<iframe src="${d}" data-src=${d}></iframe><button class="add">Add</button>`)
+          )
+      },
+      error: function (xhr, text, error) {
+          console.log(text)
+      }
+  })
+}
+
 
